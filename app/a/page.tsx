@@ -1,11 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import Footer from "./components/Footer";
-import MainContent from "./components/MainContent";
-import Navbar from "./components/NavBar";
-import Sidebar from "./components/Sidebar";
 
-const HomePage = () => {
+import { useState, useEffect } from "react";
+
+export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -31,33 +28,25 @@ const HomePage = () => {
           transform: `translateX(${isOpen ? "0px" : "-260px"})`,
           transition: "transform 0.1s ease-in-out",
         }}
-        className="fixed left-0 top-0 h-full w-[260px] z-50"
+        className="fixed left-0 top-0 h-full w-[260px] bg-gray-800 text-white shadow-lg"
       >
-        <button
-          className="block w-10 h-10 p-4"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          Open/Close1
-        </button>
-        <Sidebar />
+        <div className="p-4">Side Menu</div>
       </div>
       <div
         style={{
           transform: `translateX(${isOpen ? "260px" : "0px"})`,
           transition: "transform 0.1s ease-in-out",
         }}
-        className="bg-gray-200 flex-1"
+        className="bg-gray-200 text-white shadow-lg"
       >
         <button
-          className="block w-10 h-10 p-4"
+          className="top-4 left-4 z-50 p-4 bg-gray-800 text-white rounded"
           onClick={() => setIsOpen(!isOpen)}
         >
-          Open/Close
+          ☰
         </button>
-        <Footer />
+        Lorem ipsum dolor
       </div>
     </div>
   );
-};
-
-export default HomePage;
+}
