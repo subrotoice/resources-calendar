@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
@@ -17,9 +18,10 @@ const MenuItems = ({ item }: MenuItemsProps) => {
   return (
     <ul>
       <li>
-        <a
+        <Link
           className="cursor-pointer items-center"
           onClick={() => item.subMenu && setIsOpen(!isOpen)}
+          href={item.subMenu ? "#" : item.link}
         >
           <div className="flex cursor-pointer border-b items-center py-2 text-gray-500 hover:text-black dark:text-white text-green-800 hover:bg-gray-200 dark:text-slate-300 dark:hover:text-white mt-0 px-2">
             <span className="inline-flex justify-center items-center mr-2 h-6 flex-none text-green-800">
@@ -44,13 +46,13 @@ const MenuItems = ({ item }: MenuItemsProps) => {
               </span>
             )}
           </div>
-        </a>
+        </Link>
         {isOpen && item.subMenu && (
           <ul className="bg-gray-100/75 block dark:bg-slate-800/50">
             {item.subMenu.map((subItem, index) => (
               <div key={index} className="sidebar-subitem">
                 <li>
-                  <a
+                  <Link
                     href={subItem.link}
                     className="cursor-pointer items-center"
                   >
@@ -72,7 +74,7 @@ const MenuItems = ({ item }: MenuItemsProps) => {
                         {subItem.title}
                       </span>
                     </div>
-                  </a>
+                  </Link>
                 </li>
               </div>
             ))}

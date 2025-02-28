@@ -1,36 +1,58 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+"use client";
+
+import Footer from "./components/Footer";
+import Navbar from "./components/NavBar";
+import Sidebar from "./components/Sidebar";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata = {
-  title: "Resource Calendar",
-  description: "Resource Calendar website for managing resource.",
-  icons: {
-    icon: "https://soms.gov.bd/favicon/favicon.ico",
-  },
-};
+import { useState, useEffect } from "react";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isOpen, setIsOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const setOpenFn = () => {
+    setIsOpen((pre) => !pre);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+      setIsOpen(window.innerWidth >= 1024);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`antialiased`}>
+        <div className="flex w-full h-auto overflow-hidden">
+          {/* Sidebar */}
+          <div
+            className={`fixed left-0 top-0 h-full w-[260px] text-white shadow-lg transition-transform duration-150 ${
+              isOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <Sidebar />
+          </div>
+
+          {/* Main Content */}
+          <div
+            className={`relative flex flex-col flex-1 transition-all duration-150 ${
+              isOpen ? "ml-[260px]" : "ml-0"
+            }`}
+          >
+            <Navbar isOpen={isOpen} setOpenFn={setOpenFn} />
+            <div className="p-4">{children}</div>
+            <Footer />
+          </div>
+        </div>
       </body>
     </html>
   );

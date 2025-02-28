@@ -1,27 +1,18 @@
-const Navbar = () => {
+import { RiMenuFold3Line, RiMenuFold4Line } from "react-icons/ri";
+
+interface Props {
+  isOpen: boolean;
+  setOpenFn: () => void;
+}
+
+const Navbar = ({ isOpen, setOpenFn }: Props) => {
   return (
     <nav className="inset-x-0 bg-white h-auto z-30 transition-position w-screen lg:w-auto dark:bg-slate-800 layoutAsidePadding shadow">
       <div className="flex lg:items-stretch xl:max-w-auto xl:mx-auto">
         <div className="flex flex-1 items-stretch h-auto">
-          <div className="flex lg:hidden1 text-black-600 hover:text-black py-2 px-3 items-center cursor-pointer dark:text-white dark:hover:text-slate-400">
-            <span className="inline-flex justify-center items-center w-6 h-6">
-              <svg
-                viewBox="0 0 24 24"
-                width={24}
-                height={24}
-                className="inline-block"
-              >
-                <path
-                  fill="currentColor"
-                  d="M5,13L9,17L7.6,18.42L1.18,12L7.6,5.58L9,7L5,11H21V13H5M21,6V8H11V6H21M21,16V18H11V16H21Z"
-                />
-              </svg>
-            </span>
-            <div className="flex items-center text-center flex-1 pl-2 lg:text-center lg:pl-3 xl:text-center xl:pl-3 hidden">
-              <img
-                src="https://soms.gov.bd/images/SOMS.gif"
-                className="cover w-auto h-10 sm:h-12 md:h-14"
-              />
+          <div className="flex lg:hidden1 text-black-600 hover:text-black py-2 items-center cursor-pointer dark:text-white dark:hover:text-slate-400">
+            <div className="text-2xl p-2" onClick={() => setOpenFn()}>
+              {isOpen ? <RiMenuFold3Line /> : <RiMenuFold4Line />}
             </div>
             <div className="pl-3">
               <b className="text-gradient text-2xl drop-shadow hidden md:block">
