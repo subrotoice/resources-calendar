@@ -1,4 +1,13 @@
-const ReadModel = () => {
+import { Product } from "../resources/test/page";
+
+interface Props {
+  product: Product;
+  closeModel: () => void;
+}
+
+const ReadModel = ({ product, closeModel }: Props) => {
+  const { id, product_name, category, brand, description, price } = product;
+
   return (
     <div
       id="readProductModal"
@@ -12,14 +21,15 @@ const ReadModel = () => {
           {/* Modal header */}
           <div className="flex justify-between mb-4 rounded-t sm:mb-5">
             <div className="text-lg text-gray-900 md:text-xl dark:text-white">
-              <h3 className="font-semibold ">Apple iMac 27”</h3>
-              <p className="font-bold">$2999</p>
+              <h3 className="font-semibold ">{product_name}</h3>
+              <p className="font-bold">{price}</p>
             </div>
             <div>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="readProductModal"
+                onClick={() => closeModel()}
               >
                 <svg
                   aria-hidden="true"
@@ -43,16 +53,13 @@ const ReadModel = () => {
               Details
             </dt>
             <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-              Standard glass ,3.8GHz 8-core 10th-generation Intel Core i7
-              processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory,
-              Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD storage,
-              Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US.
+              {description}
             </dd>
             <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
               Category
             </dt>
             <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-              Electronics/PC
+              {category}
             </dd>
           </dl>
           <div className="flex justify-between items-center">
