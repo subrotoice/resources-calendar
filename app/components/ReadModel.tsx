@@ -6,7 +6,7 @@ interface Props {
 }
 
 const ReadModel = ({ product, closeModel }: Props) => {
-  const { id, product_name, category, brand, description, price } = product;
+  const { product_name, category, description, price } = product;
 
   return (
     <div
@@ -22,7 +22,7 @@ const ReadModel = ({ product, closeModel }: Props) => {
           <div className="flex justify-between mb-4 rounded-t sm:mb-5">
             <div className="text-lg text-gray-900 md:text-xl dark:text-white">
               <h3 className="font-semibold ">{product_name}</h3>
-              <p className="font-bold">{price}</p>
+              <p className="font-bold">${price}</p>
             </div>
             <div>
               <button

@@ -1,14 +1,13 @@
 "use client";
 import CreateModel from "@/app/components/CreateModel";
 import DeleteModel from "@/app/components/DeleteModel";
-import Pagination from "@/app/components/Pagination";
 import ReadModel from "@/app/components/ReadModel";
-import RowDetails from "@/app/components/RowDetails";
 import TableTanStack from "@/app/components/TableTanStack";
 import UpdateModel from "@/app/components/UpdateModel";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
 import products from "../../../products.json";
+import FormComponent from "@/app/components/FormComponent";
 
 export interface Product {
   id: number;
@@ -69,6 +68,14 @@ const TestPage = () => {
 
   return (
     <>
+      <h2>Person Form</h2>
+      <FormComponent entityType="person" />
+
+      <h2>Product Form</h2>
+      <FormComponent entityType="product" />
+
+      <h2>Customer Form</h2>
+      <FormComponent entityType="customer" />
       <TableTanStack<Product>
         data={products}
         columns={columns}

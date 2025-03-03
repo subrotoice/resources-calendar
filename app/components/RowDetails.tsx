@@ -20,6 +20,7 @@ export default function RowDetails<TData>({
     <>
       {Object.entries(product as Record<string, any>).map(([key, value]) => (
         <td key={key} className="px-4 py-3">
+          {key === "price" && "$"}
           {value}
         </td>
       ))}

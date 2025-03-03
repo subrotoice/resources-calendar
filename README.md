@@ -7,7 +7,7 @@ npm install @tanstack/react-table
 ### **Basic Table**
 
 Tanstack table start with useReactTable() where we need to pass object like data(row), columns and invock function
-_Create: Table Instance_
+_Step1: Create: Table Instance_
 
 ```jsx
 const table = useReactTable({
@@ -17,7 +17,7 @@ const table = useReactTable({
 });
 ```
 
-Column definitions
+_Step2: Column definitions_
 
 ```jsx
 const columns: ColumnDef<Person>[] = [
@@ -48,7 +48,7 @@ Column Customization. Make a column sortable or not
 },
 ```
 
-### Populating table with header and data
+### Step3: Populating table with header and data
 
 To get column headers value
 
