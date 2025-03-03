@@ -1,8 +1,46 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, FieldValues } from "react-hook-form";
+import { z } from "zod";
+import InputField from "./InputField";
+import SelectField from "./SelectField";
+import TextAreaField from "./TextAreaField";
+import { IoMdClose } from "react-icons/io";
+
+const schema = z.object({
+  name: z
+    .string()
+    .nonempty("Name field must be required!")
+    .min(3, { message: "Name must be at least 3 characters long" }),
+  price: z
+    .number({ invalid_type_error: "Amount field must be required." })
+    .min(0.01, { message: "Minimum amount is .01" })
+    .max(10000, { message: "Maximum amount is 10000" }),
+  brand: z.string(),
+  category: z.string(),
+  description: z
+    .string()
+    .min(3, { message: "Description must be at least 3 characters." }),
+});
+
+type FormData = z.infer<typeof schema>;
+
 interface Props {
   closeModel: () => void;
 }
 const CreateModel = ({ closeModel }: Props) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<FormData>({ resolver: zodResolver(schema) });
+
+  // console.log(errors);
+
+  const onsubmit = (data: FieldValues) => {
+    console.log(data);
+  };
+
   return (
     <div>
       <div
@@ -19,107 +57,59 @@ const CreateModel = ({ closeModel }: Props) => {
                 Add Product
               </h3>
               <button
-                type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-target="createProductModal"
-                data-modal-toggle="createProductModal"
                 onClick={() => closeModel()}
               >
-                <svg
-                  aria-hidden="true"
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <IoMdClose className="text-xl" />
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
             {/* Modal body */}
-            <form action="#">
+            <form onSubmit={handleSubmit(onsubmit)}>
               <div className="grid gap-4 mb-4 sm:grid-cols-2">
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type product name"
+                  <InputField
+                    label="Resource Name"
+                    register={register("name")}
+                    error={errors.name?.message}
+                    placeholder="Type Resource Name"
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="brand"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Brand
-                  </label>
-                  <input
-                    type="text"
-                    name="brand"
-                    id="brand"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Product brand"
+                  <InputField
+                    label="Brand"
+                    register={register("brand")}
+                    error={errors.brand?.message}
+                    placeholder="Resource brand"
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="price"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Price
-                  </label>
-                  <input
-                    type="number"
-                    name="price"
-                    id="price"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="$2999"
+                  <InputField
+                    label="Price"
+                    register={register("price", { valueAsNumber: true })}
+                    error={errors.price?.message}
+                    placeholder="Price"
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="category"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Category
-                  </label>
-                  <select
-                    id="category"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  >
-                    <option>Select category</option>
-                    <option value="TV">TV/Monitors</option>
-                    <option value="PC">PC</option>
-                    <option value="GA">Gaming/Console</option>
-                    <option value="PH">Phones</option>
-                  </select>
+                  <SelectField
+                    label="Category"
+                    register={register("category")}
+                    options={[
+                      { value: "", label: "Select category" },
+                      { value: "TV", label: "TV/Monitors" },
+                      { value: "PC", label: "PC" },
+                      { value: "GA", label: "Gaming/Console" },
+                      { value: "PH", label: "Phones" },
+                    ]}
+                  />
                 </div>
                 <div className="sm:col-span-2">
-                  <label
-                    htmlFor="description"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Description
-                  </label>
-                  <textarea
-                    id="description"
-                    rows={4}
-                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Write product description here"
-                    defaultValue={""}
+                  <TextAreaField
+                    label="Item Weight (kg)"
+                    placeholder="Enter description"
+                    register={register("description")}
+                    error={errors.description?.message}
                   />
                 </div>
               </div>

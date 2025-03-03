@@ -12,7 +12,9 @@ import {
   ColumnFiltersState,
 } from "@tanstack/react-table";
 import RowDetails from "./RowDetails";
-import { FaPlus } from "react-icons/fa6";
+import { FaFilter, FaPlus } from "react-icons/fa6";
+import { IoChevronDown } from "react-icons/io5";
+import CheckboxListItem from "./CheckboxListItem";
 
 interface Props<TData> {
   data: TData[];
@@ -30,6 +32,11 @@ export default function TableTanStack<TData>({
   const [filtering, setFiltering] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   const table = useReactTable({
     data,
@@ -107,55 +114,43 @@ export default function TableTanStack<TData>({
                   className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                   type="button"
                 >
-                  <svg
-                    className="-ml-1 mr-1.5 w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    />
-                  </svg>
-                  Actions
+                  <IoChevronDown />
+                  <span className="mx-1">Actions</span>
                 </button>
                 <button
                   id="filterDropdownButton"
                   data-dropdown-toggle="filterDropdown"
                   className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                   type="button"
+                  onClick={toggleDropdown}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                    className="h-4 w-4 mr-2 text-gray-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Filter
-                  <svg
-                    className="-mr-1 ml-1.5 w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    />
-                  </svg>
+                  <FaFilter />
+                  <span className="mx-1">Filter</span>
+                  <IoChevronDown />
                 </button>
+                {isOpen && (
+                  <div
+                    id="filterDropdown"
+                    className="z-10 w-56 p-3 bg-white rounded-lg shadow dark:bg-gray-700 block"
+                    style={{
+                      position: "absolute",
+                      right: "0px",
+                      top: "3.6rem",
+                    }}
+                    data-popper-placement="bottom"
+                  >
+                    <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                      Category
+                    </h6>
+                    <ul
+                      className="space-y-2 text-sm"
+                      aria-labelledby="filterDropdownButton"
+                    >
+                      <CheckboxListItem label="Apple" count={56} />
+                      <CheckboxListItem label="MS" count={22} />
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>
