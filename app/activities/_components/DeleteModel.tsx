@@ -1,13 +1,11 @@
-import { Product } from "../resources/test/page";
+import { Product } from "../../resources/test/page";
 
-interface Props {
-  product: Product;
+interface Props<TData> {
+  entity: TData;
   closeModel: () => void;
 }
 
-const DeleteModel = ({ product, closeModel }: Props) => {
-  const { id, product_name, category, brand, description, price } = product;
-
+const DeleteModel = <TData,>({ entity, closeModel }: Props<TData>) => {
   return (
     <div
       id="deleteModal"
@@ -53,7 +51,8 @@ const DeleteModel = ({ product, closeModel }: Props) => {
             />
           </svg>
           <p className="mb-4 text-gray-500 dark:text-gray-300">
-            Are you sure you want to delete this item?
+            Are you sure you want to delete this item? <br />
+            <span className="font-bold">{(entity as any).name}</span>
           </p>
           <div className="flex justify-center items-center space-x-4">
             <button

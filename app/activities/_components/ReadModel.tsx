@@ -1,13 +1,12 @@
-import { Product } from "../resources/test/page";
+import ResourceType from "../../entities/ResourceType";
+import ActiveStatus from "../../components/ActiveStatus";
 
-interface Props {
-  product: Product;
+interface Props<TData> {
+  entity: TData;
   closeModel: () => void;
 }
 
-const ReadModel = ({ product, closeModel }: Props) => {
-  const { product_name, category, description, price } = product;
-
+const ReadModel = <TData,>({ entity, closeModel }: Props<TData>) => {
   return (
     <div
       id="readProductModal"
@@ -21,8 +20,10 @@ const ReadModel = ({ product, closeModel }: Props) => {
           {/* Modal header */}
           <div className="flex justify-between mb-4 rounded-t sm:mb-5">
             <div className="text-lg text-gray-900 md:text-xl dark:text-white">
-              <h3 className="font-semibold ">{product_name}</h3>
-              <p className="font-bold">${price}</p>
+              <h3 className="font-semibold ">
+                Activity Type: {(entity as any).name}
+              </h3>
+              <ActiveStatus value={(entity as any).is_active} />
             </div>
             <div>
               <button
@@ -48,20 +49,7 @@ const ReadModel = ({ product, closeModel }: Props) => {
               </button>
             </div>
           </div>
-          <dl>
-            <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-              Details
-            </dt>
-            <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-              {description}
-            </dd>
-            <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-              Category
-            </dt>
-            <dd className="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-              {category}
-            </dd>
-          </dl>
+
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3 sm:space-x-4">
               <button

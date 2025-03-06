@@ -5,6 +5,7 @@ import Navbar from "./components/NavBar";
 import Sidebar from "./components/Sidebar";
 import "./globals.css";
 import { useState, useEffect } from "react";
+import QueryClientProvider from "./QueryClientProvider";
 
 export default function RootLayout({
   children,
@@ -49,7 +50,9 @@ export default function RootLayout({
             }`}
           >
             <Navbar isOpen={isOpen} setOpenFn={setOpenFn} />
-            <div className="p-4">{children}</div>
+            <QueryClientProvider>
+              <div className="p-4">{children}</div>
+            </QueryClientProvider>
             <Footer />
           </div>
         </div>

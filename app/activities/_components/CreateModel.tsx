@@ -2,9 +2,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FieldValues } from "react-hook-form";
 import { z } from "zod";
-import InputField from "./InputField";
-import SelectField from "./SelectField";
-import TextAreaField from "./TextAreaField";
+import InputField from "../../components/InputField";
+import SelectField from "../../components/SelectField";
+import TextAreaField from "../../components/TextAreaField";
 import { IoMdClose } from "react-icons/io";
 
 const schema = z.object({

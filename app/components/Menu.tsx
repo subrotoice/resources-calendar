@@ -9,7 +9,16 @@ const Menu = () => {
       link: "#", // Add link for the main menu item
       subMenu: [
         { title: "রিসোর্সে তালিকা ", icon: "🔄", link: "/resources/list" },
-        { title: "ইভেন্ট তালিকা", icon: "🔄", link: "/transfer-approval" },
+        { title: "রিসোর্সে ধরণ", icon: "🔄", link: "/resources/types" },
+      ],
+    },
+    {
+      title: "এক্টিভিটি",
+      icon: "🔄",
+      link: "#", // Add link for the main menu item
+      subMenu: [
+        { title: "এক্টিভিটি তালিকা ", icon: "🔄", link: "/activities/list" },
+        { title: "এক্টিভিটি ধরণ", icon: "🔄", link: "/activities/types" },
       ],
     },
     {

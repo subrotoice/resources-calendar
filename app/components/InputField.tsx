@@ -6,6 +6,7 @@ interface InputFieldProps {
   placeholder?: string;
   register: any;
   error?: string;
+  defaultValue?: string;
 }
 
 const InputField = ({
@@ -13,6 +14,7 @@ const InputField = ({
   placeholder,
   register,
   error,
+  defaultValue,
 }: InputFieldProps) => {
   return (
     <>
@@ -20,6 +22,7 @@ const InputField = ({
       <input
         {...register}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5 dark:bg-gray-700 dark:text-white  ${
           error
             ? "border-red-500 focus:ring-red-500 focus:border-red-500"

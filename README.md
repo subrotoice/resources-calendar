@@ -28,14 +28,22 @@ const columns: ColumnDef<Person>[] = [
 ];
 ```
 
-Column Customization. Manupulate data
+Column Customization: Manupulate data
 
 ```jsx
-{
-    accessorKey: "gender",
-    header: "Gender",
-    cell: (gender) => gender.getValue() + " OK", // output: mail Ok
-},
+  {
+    accessorKey: "amount",
+    header: () => <div className="text-right">Amount 22</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"))
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount)
+
+      return <div className="text-right font-medium">{formatted} 44</div>
+    },
+  },
 ```
 
 Column Customization. Make a column sortable or not
@@ -90,7 +98,7 @@ const table = useReactTable({
   data,
   columns,
   getCoreRowModel: getCoreRowModel(),
-  // added
+  // added: Pagination
   getPaginationRowModel: getPaginationRowModel(),
   initialState: {
     pagination: {
@@ -107,27 +115,27 @@ After table closeing tag
 className="p-2 bg-grey-200 border mt-2"
 onClick={() => table.setPageIndex(0)}
 >
-First
+  First
 </button>
 <button
 className="p-2 bg-grey-200 border mt-2 disabled:opacity-50"
 onClick={() => table.previousPage()}
 disabled={!table.getCanPreviousPage()}
 >
-Pre
+  Pre
 </button>
 <button
 className="p-2 bg-grey-200 border mt-2 disabled:opacity-50"
 onClick={() => table.nextPage()}
 disabled={!table.getCanNextPage()}
 >
-Next
+  Next
 </button>
 <button
 className="p-2 bg-grey-200 border mt-2"
 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 >
-Last
+  Last
 </button>
 ```
 
@@ -146,7 +154,7 @@ const table = useReactTable({
       pageSize: 2,
     },
   },
-  // Added for sorting
+  // Added: Sorting
   getSortedRowModel: getSortedRowModel(),
   state: {
     sorting: sorting,
@@ -183,7 +191,7 @@ const table = useReactTable({
     globalFilter: filtering,
   },
   onSortingChange: setSorting,
-  // Added for search / Filter
+  // added: Filter
   getFilteredRowModel: getFilteredRowModel(),
   onGlobalFilterChange: setFiltering,
 });
@@ -224,7 +232,7 @@ const table = useReactTable({
   getFilteredRowModel: getFilteredRowModel(),
   onGlobalFilterChange: setFiltering,
 
-  // added for filter on a specific column
+  // added: Filter on a specific column
   onColumnFiltersChange: setColumnFilters,
 });
 
