@@ -1,4 +1,4 @@
-import Resource from "../entities/Resource";
+import ResourceType from "../entities/ResourceType";
 import CreateModel from "../resources/_components/CreateModel";
 import DeleteModel from "../resources/_components/DeleteModel";
 import ReadModel from "../resources/_components/ReadModel";
@@ -6,7 +6,7 @@ import UpdateResourcesType from "./UpdateResourcesType";
 
 interface Props {
   modalType: string | null;
-  selectedEntity: Resource | null;
+  selectedEntity: ResourceType | null;
   closeModel: () => void;
 }
 

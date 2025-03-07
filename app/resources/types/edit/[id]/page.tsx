@@ -1,6 +1,6 @@
 import useResourcesType from "@/app/hooks/useResourcesType";
-import IssueForm from "./_components/IssueForm";
 import { notFound } from "next/navigation";
+import ResourcesTypeForm from "../../_components/ResourcesTypeForm";
 
 interface Props {
   params: { id: string };
@@ -12,7 +12,7 @@ const ResourceTypeEdit = async ({ params }: Props) => {
 
   if (!data) notFound();
 
-  return <IssueForm resourcesType={data} />;
+  return <ResourcesTypeForm resourcesType={data} />;
 };
 
 export default ResourceTypeEdit;

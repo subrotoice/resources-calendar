@@ -1,4 +1,6 @@
-import { Product } from "../test/page";
+import APIClient from "@/app/components/services/api-client";
+import ResourceType from "@/app/entities/ResourceType";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props<TData> {
   entity: TData;
@@ -6,6 +8,24 @@ interface Props<TData> {
 }
 
 const DeleteModel = <TData,>({ entity, closeModel }: Props<TData>) => {
+  const queryClient = useQueryClient();
+  const apiClient = new APIClient<ResourceType>("/resources/types");
+
+  // DELETE Post
+  const deleteMutation = useMutation({
+    mutationFn: apiClient.delete,
+    onSuccess: (id) => {
+      console.log(id); // This will log the deleted post ID
+      queryClient.setQueryData(
+        ["resourcesTypes"],
+        (oldData: ResourceType[] | undefined) =>
+          oldData
+            ? oldData.filter((resourcesTypes) => resourcesTypes.id !== id)
+            : []
+      );
+    },
+  });
+
   return (
     <div
       id="deleteModal"
@@ -19,7 +39,6 @@ const DeleteModel = <TData,>({ entity, closeModel }: Props<TData>) => {
           <button
             type="button"
             className="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            data-modal-toggle="deleteModal"
             onClick={() => closeModel()}
           >
             <svg
@@ -52,11 +71,14 @@ const DeleteModel = <TData,>({ entity, closeModel }: Props<TData>) => {
           </svg>
           <p className="mb-4 text-gray-500 dark:text-gray-300">
             Are you sure you want to delete this item? <br />
-            <span className="font-bold">{(entity as any).name}</span>
+            <span className="font-bold">
+              {(entity as any).name}
+              {(entity as any).id}
+            </span>
           </p>
           <div className="flex justify-center items-center space-x-4">
             <button
-              data-modal-toggle="deleteModal"
+              onClick={() => closeModel()}
               type="button"
               className="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
             >
@@ -64,6 +86,10 @@ const DeleteModel = <TData,>({ entity, closeModel }: Props<TData>) => {
             </button>
             <button
               type="submit"
+              onClick={() => {
+                deleteMutation.mutate((entity as any).id);
+                closeModel();
+              }}
               className="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
             >
               Yes, I'm sure

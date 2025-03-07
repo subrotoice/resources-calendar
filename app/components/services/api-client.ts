@@ -6,6 +6,21 @@ export interface FetchResponse<T> {
   data: T[];
 }
 
+export interface PostResponse<T> {
+  success: boolean;
+  message: string | null;
+  data: Data<T>;
+}
+
+export interface DeleteResponse {
+  success: boolean;
+  message: string | null;
+}
+
+interface Data<T> {
+  new_resource_type: T;
+}
+
 const axiosInstance = axios.create({
   baseURL: "https://dev-api.soms.gov.bd/gw/resource-service/api",
   headers: {
@@ -19,29 +34,34 @@ class APIClient<T> {
     this.endPoint = endPoint;
   }
 
-  getAll = (config: AxiosRequestConfig) => {
+  getAll = (config?: AxiosRequestConfig) => {
     return axiosInstance
-      .get<FetchResponse<T>>(this.endPoint, config)
+      .get<FetchResponse<T>>(this.endPoint, config) // ✅ Ensure correct response type
+      .then((res) => res.data.data); // Returns the full API response
+  };
+
+  get = (id: number | string, config?: AxiosRequestConfig) => {
+    return axiosInstance
+      .get<T>(`${this.endPoint}/${id}`, config)
       .then((res) => res.data);
   };
 
-  get = (id: number | string) => {
+  post = (data: Partial<T>, config?: AxiosRequestConfig) => {
     return axiosInstance
-      .get<T>(this.endPoint + "/" + id)
-      .then((res) => res.data);
+      .post<PostResponse<T>>(this.endPoint, data, config)
+      .then((res) => res.data.data.new_resource_type);
   };
 
-  post = (newData: T) => {
+  put = (id: number, data: Partial<T>, config?: AxiosRequestConfig) => {
     return axiosInstance
-      .post<T>(this.endPoint, newData)
-      .then((res) => res.data);
+      .put<FetchResponse<T>>(`${this.endPoint}/${id}`, data, config)
+      .then((res) => res.data.data);
   };
 
-  put = (id: string | number, newData: T) => {
+  delete = (id: number | string, config?: AxiosRequestConfig) => {
     return axiosInstance
-      .put<T>(this.endPoint + id, newData)
-      .then((res) => res.data)
-      .catch((err) => err.message);
+      .delete(`${this.endPoint}/${id}`, config)
+      .then((res) => id);
   };
 }
 

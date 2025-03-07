@@ -10,18 +10,18 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa6";
 import { IoChevronDown } from "react-icons/io5";
-import Resource from "../entities/Resource";
 import CheckboxListItem from "./CheckboxListItem";
 import RowDetails from "./RowDetails";
+import ResourceType from "../entities/ResourceType";
 
 interface Props {
-  data: Resource[];
-  columns: ColumnDef<Resource>[];
+  data: ResourceType[];
+  columns: ColumnDef<ResourceType>[];
   setModelProp: (modal: string) => void;
-  setEntityProp: (entity: Resource) => void;
+  setEntityProp: (entity: ResourceType) => void;
 }
 
 export default function TableTanStack({
@@ -34,7 +34,10 @@ export default function TableTanStack({
   const [filtering, setFiltering] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
+  const [pagination, setPagination] = useState({
+    pageIndex: 0, //initial page index
+    pageSize: 6, //default page size
+  });
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -44,6 +47,7 @@ export default function TableTanStack({
     columns: [...columns],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     initialState: {
       pagination: {
         pageSize: 5,
@@ -54,12 +58,22 @@ export default function TableTanStack({
       sorting,
       globalFilter: filtering,
       columnFilters,
+      pagination,
     },
     onSortingChange: setSorting,
     getFilteredRowModel: getFilteredRowModel(),
     onGlobalFilterChange: setFiltering,
     onColumnFiltersChange: setColumnFilters,
   });
+
+  // Ensure the current pageIndex is valid after data changes
+  useEffect(() => {
+    const totalPages = table.getPageCount();
+    if (pagination.pageIndex >= totalPages && totalPages > 0) {
+      // If the current pageIndex is out of bounds, reset to the last valid page
+      table.setPageIndex(totalPages - 1);
+    }
+  }, [data]); // Dependency on the `data` prop
 
   return (
     <>
@@ -187,7 +201,7 @@ export default function TableTanStack({
                 <tbody>
                   {table.getRowModel().rows.map((row) => (
                     <tr key={row.id} className="border-b dark:border-gray-700">
-                      <RowDetails<Resource>
+                      <RowDetails<ResourceType>
                         entity={row.original}
                         setEntityProp={setEntityProp}
                         setModelProp={setModelProp}

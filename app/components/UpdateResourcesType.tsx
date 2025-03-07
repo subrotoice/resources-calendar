@@ -3,6 +3,9 @@ import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "./InputField";
 import ToggleSwitch from "./ToggleSwitch";
+import APIClient from "./services/api-client";
+import ResourceType from "../entities/ResourceType";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const schema = z.object({
   name: z
@@ -20,14 +23,42 @@ interface Props<TData> {
 }
 
 const UpdateResourcesType = <TData,>({ entity, closeModel }: Props<TData>) => {
+  const queryClient = useQueryClient();
+  const apiClient = new APIClient<ResourceType>("/resources/types");
+
+  // UPDATE Post
+  const updateMutation = useMutation({
+    mutationFn: ({
+      id,
+      updatedPost,
+    }: {
+      id: number;
+      updatedPost: Omit<ResourceType, "id">;
+    }) => apiClient.put(id, updatedPost),
+    onSuccess: (savedData, { id }) => {
+      console.log(id); // Logs the updated post ID
+      console.log(savedData); // Logs the updated post data
+      queryClient.setQueryData(
+        ["resourcesTypes"],
+        (oldData: ResourceType[] | undefined) =>
+          oldData
+            ? oldData.map((post) =>
+                post.id === id ? { ...post, ...savedData } : post
+              )
+            : []
+      );
+      closeModel();
+    },
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onsubmit = (data: FieldValues) => {
-    console.log(data);
+  const onsubmit = (data: FormData) => {
+    updateMutation.mutate({ id: (entity as any).id, updatedPost: data }); // ✅ Correct
   };
 
   return (
@@ -82,7 +113,10 @@ const UpdateResourcesType = <TData,>({ entity, closeModel }: Props<TData>) => {
                     defaultValue={(entity as any).name}
                   />
                 </div>
-                <ToggleSwitch register={register("is_active")} checked={true} />
+                <ToggleSwitch
+                  register={register("is_active")}
+                  checked={(entity as any).is_active}
+                />
               </div>
               <div className="flex items-center space-x-4">
                 <button
