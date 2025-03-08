@@ -2,12 +2,12 @@
 import InputField from "@/app/components/InputField";
 import ToggleSwitch from "@/app/components/ToggleSwitch";
 import APIClient from "@/app/components/services/api-client";
-import ResourceType from "@/app/entities/ResourceType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { z } from "zod";
+import { ActivityType } from "./columns";
 
 const schema = z.object({
   name: z
@@ -26,21 +26,21 @@ const CreateModel = ({ closeModel }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
   const queryClient = useQueryClient();
-  const apiClient = new APIClient<ResourceType>("/resources/types");
+  const apiClient = new APIClient<ActivityType>("/activities/types");
 
   const createMutation = useMutation({
     mutationFn: apiClient.post,
     onSuccess: (savedData, newData) => {
       console.log(savedData);
-      const formattedData: ResourceType = {
+      const formattedData: ActivityType = {
         id: savedData.id,
         name: savedData.name,
         is_active: savedData.is_active,
       };
-      queryClient.setQueryData<ResourceType[]>(["resourcesTypes"], (data) => [
+      queryClient.setQueryData<ActivityType[]>(["activitiesTypes"], (data) => [
         formattedData,
         ...(data || []),
       ]);
@@ -66,7 +66,7 @@ const CreateModel = ({ closeModel }: Props) => {
             {/* Modal header */}
             <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Add Resource Type
+                Add Activity Type
               </h3>
               <button
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"

@@ -1,11 +1,11 @@
-import ResourceModalAction from "@/app/components/ResourceModalAction";
-import ResourceType from "@/app/entities/ResourceType";
-import useResourcesTypes from "@/app/hooks/useResourcesTypes";
+import useActivitiesTypes from "@/app/hooks/useActivitiesTypes";
+import { ActivityType, columns } from "./_components/columns";
+import ActivityModalAction from "./_components/ActivityModalAction";
 
 const ActivityTypes = async () => {
-  const { data }: { data: ResourceType[] } = await useResourcesTypes();
+  const { data }: { data: ActivityType[] } = await useActivitiesTypes();
 
-  return <ResourceModalAction resourcesTypes={data} />;
+  return <ActivityModalAction resourcesTypes={data} columns={columns} />;
 };
 
 export default ActivityTypes;
