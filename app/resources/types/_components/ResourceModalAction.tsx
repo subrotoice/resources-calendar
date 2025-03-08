@@ -2,10 +2,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
-import ResourceType from "../entities/ResourceType";
-import ResourceModal from "./ResourceModal";
-import APIClient from "./services/api-client";
+import { ResourceType } from "./columns";
+import APIClient from "@/app/components/services/api-client";
 import TableTanStack from "./TableTanStack";
+import ResourceModal from "./ResourceModal";
 
 interface DataTableProps {
   resourcesTypes: ResourceType[];

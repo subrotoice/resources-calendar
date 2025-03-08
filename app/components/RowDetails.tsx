@@ -17,6 +17,10 @@ export default function RowDetails<TData>({
 }: Props<TData>) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handelOnBlur = () => {
+    setTimeout(() => setIsOpen(!isOpen), 200);
+  };
+
   return (
     <>
       {Object.entries(entity as Record<string, any>).map(([key, value]) => (
@@ -29,11 +33,10 @@ export default function RowDetails<TData>({
       {/* Action dropdown */}
       <td className="relative px-4 py-3 flex items-center justify-end">
         <button
-          id="apple-imac-27-dropdown-button"
-          data-dropdown-toggle="apple-imac-27-dropdown"
           className="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
           type="button"
           onClick={() => setIsOpen(!isOpen)}
+          onBlur={handelOnBlur}
         >
           <BsThreeDotsVertical />
         </button>

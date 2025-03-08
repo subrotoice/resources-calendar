@@ -1,11 +1,11 @@
+import { columns, ResourceType } from "./_components/columns";
 import useResourcesTypes from "@/app/hooks/useResourcesTypes";
-import { ResourceType, columns } from "./_components/columns";
-import { DataTable } from "./_components/DataTable";
-export const dynamic = "force-dynamic"; // Explicitly make this page dynamic
-const ResourceTypes = async () => {
+import ResourceModalAction from "./_components/ResourceModalAction";
+
+const ActivityTypes = async () => {
   const { data }: { data: ResourceType[] } = await useResourcesTypes();
 
-  return <DataTable columns={columns} data={data} />;
+  return <ResourceModalAction resourcesTypes={data} columns={columns} />;
 };
 
-export default ResourceTypes;
+export default ActivityTypes;

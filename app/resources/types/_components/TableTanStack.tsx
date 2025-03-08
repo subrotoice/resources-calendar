@@ -13,8 +13,9 @@ import {
 import { useEffect, useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa6";
 import { IoChevronDown } from "react-icons/io5";
-import CheckboxListItem from "./CheckboxListItem";
-import RowDetails from "./RowDetails";
+import { ResourceType } from "./columns";
+import CheckboxListItem from "@/app/components/CheckboxListItem";
+import RowDetails from "@/app/components/RowDetails";
 
 interface Props {
   data: ResourceType[];
@@ -112,7 +113,7 @@ export default function TableTanStack({
                   onClick={() => setModelProp("add")}
                 >
                   <FaPlus className="mr-2" />
-                  Add product
+                  Add
                 </button>
                 <div className="flex items-center space-x-3 w-full md:w-auto">
                   <button
@@ -190,13 +191,26 @@ export default function TableTanStack({
                   ))}
                 </thead>
                 <tbody>
-                  {table.getRowModel().rows.map((row) => (
+                  {/* {table.getRowModel().rows.map((row) => (
                     <tr key={row.id} className="border-b dark:border-gray-700">
                       <RowDetails<ResourceType>
                         entity={row.original}
                         setEntityProp={setEntityProp}
                         setModelProp={setModelProp}
                       />
+                    </tr>
+                  ))} */}
+
+                  {table.getRowModel().rows.map((row) => (
+                    <tr key={row.id} className="border dark:border-gray-700">
+                      {row.getVisibleCells().map((cell) => (
+                        <td className="px-4" key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
                     </tr>
                   ))}
                 </tbody>

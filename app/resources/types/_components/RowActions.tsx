@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
-import { ResourceType } from "./columns";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaEye } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
+import { FaEye } from "react-icons/fa6";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { ResourceType } from "./columns";
 import ResourceModal from "./ResourceModal";
-import Link from "next/link";
 
 interface Props {
   entity: ResourceType;
@@ -19,6 +18,10 @@ const RowActions = ({ entity }: Props) => {
   );
   const [modalType, setModalType] = useState<string | null>(null);
 
+  const handelOnBlur = () => {
+    setTimeout(() => setIsOpen(!isOpen), 200);
+  };
+
   return (
     <>
       <div className="relative px-4 py-3 flex items-center justify-end">
@@ -26,6 +29,7 @@ const RowActions = ({ entity }: Props) => {
           className="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
           type="button"
           onClick={() => setIsOpen(!isOpen)}
+          onBlur={handelOnBlur}
         >
           <BsThreeDotsVertical />
         </button>
@@ -58,12 +62,6 @@ const RowActions = ({ entity }: Props) => {
                   <FaEdit className="text-md mr-2" />
                   Edit
                 </button>
-                <Link
-                  className="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200"
-                  href={`/resources/types/edit/${entity.id}`}
-                >
-                  Edit
-                </Link>
               </li>
 
               {/* Preview action */}
