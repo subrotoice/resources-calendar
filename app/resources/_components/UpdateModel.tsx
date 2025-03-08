@@ -1,4 +1,4 @@
-import { Product } from "../../resources/test/page";
+import { Product } from "../calendar/page";
 
 interface Props<TData> {
   entity: TData;

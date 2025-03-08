@@ -10,6 +10,7 @@ const Menu = () => {
       subMenu: [
         { title: "রিসোর্সে তালিকা ", icon: "🔄", link: "/resources/list" },
         { title: "রিসোর্সে ধরণ", icon: "🔄", link: "/resources/types" },
+        { title: "Calendar", icon: "🔄", link: "/resources/calendar" },
       ],
     },
     {
